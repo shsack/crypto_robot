@@ -1,6 +1,8 @@
 import requests
 from datetime import datetime
 import pandas as pd
+import stockstats
+import numpy as np
 
 
 def get_filename(from_symbol, to_symbol, exchange, datetime_interval, download_date):
@@ -49,22 +51,37 @@ def read_dataset(filename):
     return df
 
 
+def collect_data(from_symbol, to_symbol, exchange, datetime_interval):
+
+    data = download_data(from_symbol, to_symbol, exchange, datetime_interval)
+    df = convert_to_dataframe(data)
+    df = df.rename(columns={'volumefrom': 'volume'})
+    del df['volumeto']
+
+    # Add features
+    df = stockstats.StockDataFrame.retype(df)
+    df.get("macd")
+    df.get("rsi_14")
+    df["average"] = (df["high"] + df["low"]) / 2
+
+    # Filter empty data points and infinities
+    df = filter_empty_datapoints(df)
+    df = df.replace([np.inf, -np.inf], np.nan)
+    df.dropna(inplace=True)
+
+    current_datetime = datetime.now().date().isoformat()
+    filename = get_filename(from_symbol, to_symbol, exchange, datetime_interval, current_datetime)
+
+    print('Saving data to %s' % filename)
+    df.to_csv(filename, index=False)
+
+
 from_symbol = 'BTC'
 to_symbol = 'USD'
 exchange = 'Bitstamp'
 datetime_interval = 'day'
 
-data = download_data(from_symbol, to_symbol, exchange, datetime_interval)
-df = convert_to_dataframe(data)
-df = filter_empty_datapoints(df)
-df = df.rename(columns={'volumefrom': 'volume'})
-del df['volumeto']
-
-current_datetime = datetime.now().date().isoformat()
-filename = get_filename(from_symbol, to_symbol, exchange, datetime_interval, current_datetime)
-
-print('Saving data to %s' % filename)
-df.to_csv(filename, index=False)
+collect_data(from_symbol, to_symbol, exchange, datetime_interval)
 
 
 
