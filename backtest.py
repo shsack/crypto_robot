@@ -23,7 +23,10 @@ scaled = scaler.transform(orginal_data.values)
 data = series_to_supervised(scaled, n_in=num_past_days, n_out=1)
 values = data.values
 
-n_train_days = int(0.9 * len(data))
+# n_train_days = int(0.9 * len(data))
+
+n_train_days = len(data) - 70
+
 test = values[n_train_days:, :]
 test_X = test[:, :num_obs]
 test_X = test_X.reshape((test_X.shape[0], num_past_days, num_features))
@@ -40,44 +43,51 @@ prediced_changes = []
 for i in range(len(inv_yhat_test) - 1):
     prediced_changes.append(inv_yhat_test[i+1] / inv_yhat_test[i])
 
-open = orginal_data['open'][n_train_days + num_past_days:]
-close = orginal_data['close'][n_train_days + num_past_days:]
+open = orginal_data['open'][n_train_days + num_past_days + 1:]
+close = orginal_data['close'][n_train_days + num_past_days + 1:]
 
 model_returns = 1
 for i, prediced_change in enumerate(prediced_changes):
     actual_change = close[i] / open[i]
 
     if prediced_change > 1 and actual_change > 1:
-        model_returns *= actual_change
-
+        tmp = actual_change
     if prediced_change > 1 and actual_change < 1:
-        model_returns *= actual_change
-
+        tmp = actual_change
     if prediced_change < 1 and actual_change < 1:
-        model_returns *= 1 + (1 - actual_change)
-
+        tmp = 1 + (1 - actual_change)
     if prediced_change < 1 and actual_change > 1:
-        model_returns *= 1 - (1 - actual_change)
+        tmp = 1 - (actual_change - 1)
+
+    model_returns *= tmp
 
 # Random buying and selling
 random_returns_list = []
-for _ in range(10):
+np.random.seed(10)
+
+for _ in range(1000):
     random_returns = 1
-    for i, prediced_change in enumerate(prediced_changes):
-        actual_change = close[i] / open[i]
-        random_signal = np.random.rand(1)
+    for o, c in zip(open, close):
+        actual_change = c / o
+        random_signal = np.random.randint(2)
 
-        if random_signal > 0.5:
-            random_returns *= actual_change
+        if random_signal == 1 and actual_change > 1:
+            tmp = actual_change
+        if random_signal == 1 and actual_change < 1:
+            tmp = actual_change
+        if random_signal == 0 and actual_change < 1:
+            tmp = 1 + (1 - actual_change)
+        if random_signal == 0 and actual_change > 1:
+            tmp = 1 - (actual_change - 1)
 
-        if random_signal < 0.5:
-            random_returns *= 1 + (1 - actual_change)
-        random_returns_list.append(random_returns)
+        random_returns *= tmp
+    random_returns_list.append(random_returns)
 
 
-print('HODL gains are {0:.2f} %.'.format(100 * (close[-1] / open[0])))
-print('Model gains are {0:.2f} %.'.format(100 * model_returns))
-print('Random gains are {0:.2f} %.'.format(100 * np.mean(np.array(random_returns_list))))
+print('\n')
+print('HODLing: {0:.2f} % of original investment.'.format(100 * (close[-1] / open[0])))
+print('LSTM signal: {0:.2f} % of original investment.'.format(100 * model_returns))
+print('Random signal: {0:.2f} % of original investment.'.format(100 * np.mean(np.array(random_returns_list))))
 
 
 
