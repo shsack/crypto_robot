@@ -83,12 +83,16 @@ plt.plot(original_data.index[num_past_days:], original_data['average'][num_past_
 plt.plot(original_data.index[num_past_days:], list(inv_yhat_train) + list(inv_yhat_test), label='Predicted')
 plt.axvline(x=original_data.index[n_train_days], label='Prediction Start', ymin=0.1, ymax=0.75, linestyle='--')
 plt.legend()
+plt.xlabel('Date')
+plt.ylabel('BTC/USD')
 plt.savefig('plots/performance_train_test.pdf')
 plt.close()
 
 plt.plot(original_data.index[n_train_days:], original_data['average'][n_train_days:], label='Target')
 plt.plot(original_data.index[n_train_days + num_past_days:], list(inv_yhat_test), label='Predicted')
 plt.legend()
+plt.xlabel('Date')
+plt.ylabel('USD/BTC')
 plt.savefig('plots/performance_test.pdf')
 
 # Save model
