@@ -55,7 +55,7 @@ model.add(Dense(1))
 model.compile(loss='mae', optimizer='adam')
 
 # Train the model
-history = model.fit(train_X, train_y, epochs=100, batch_size=10, validation_data=(test_X, test_y), verbose=2, shuffle=False)
+history = model.fit(train_X, train_y, epochs=5, batch_size=10, validation_data=(test_X, test_y), verbose=2, shuffle=False)
 
 # Plot the loss function
 plt.plot(history.history['loss'], label='train')
