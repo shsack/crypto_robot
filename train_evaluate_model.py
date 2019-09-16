@@ -60,6 +60,8 @@ history = model.fit(train_X, train_y, epochs=5, batch_size=10, validation_data=(
 # Plot the loss function
 plt.plot(history.history['loss'], label='train')
 plt.plot(history.history['val_loss'], label='test')
+plt.xlabel('Epoch')
+plt.ylabel('Loss')
 plt.legend()
 plt.savefig('plots/loss_history.pdf')
 plt.close()
