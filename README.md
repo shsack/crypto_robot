@@ -14,7 +14,7 @@ To train the network and plot the historical training history run `python train_
 
 ![performance_train_test](https://user-images.githubusercontent.com/45107198/65030726-4deca700-d940-11e9-8364-7dfdeb28f3d9.png)
 
-![performance_test](https://user-images.githubusercontent.com/45107198/65028571-8db18f80-d93c-11e9-985f-afbba015cd50.png)
+![performance_test](https://user-images.githubusercontent.com/45107198/65030772-6492fe00-d940-11e9-9a13-f656e46d4e06.png)
 
 
 ## Backtest trading strategy
