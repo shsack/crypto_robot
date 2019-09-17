@@ -94,7 +94,7 @@ plt.plot(original_data.index[n_train_days:], original_data['average'][n_train_da
 plt.plot(original_data.index[n_train_days + num_past_days:], list(inv_yhat_test), label='Predicted')
 plt.legend()
 plt.xlabel('Date')
-plt.ylabel('USD/BTC')
+plt.ylabel('BTC/USD')
 plt.savefig('plots/performance_test.pdf')
 
 # Save model
