@@ -12,7 +12,7 @@ To train the network and plot the historical training history run `python train_
 
 ![loss_history](https://user-images.githubusercontent.com/45107198/65030673-37465000-d940-11e9-8deb-f575239156f3.png)
 
-![performance_train_test](https://user-images.githubusercontent.com/45107198/65028506-74104800-d93c-11e9-8a45-ef11cb9523a0.png)
+![performance_train_test](https://user-images.githubusercontent.com/45107198/65030726-4deca700-d940-11e9-8364-7dfdeb28f3d9.png)
 
 ![performance_test](https://user-images.githubusercontent.com/45107198/65028571-8db18f80-d93c-11e9-985f-afbba015cd50.png)
 
