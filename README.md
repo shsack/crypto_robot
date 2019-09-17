@@ -10,7 +10,7 @@ LSTMs lend themselves well for making predictions based on time series data, lik
 The LSTM is implemented using [Keras](https://keras.io/) which provides a high level API to implement neural networks.
 To train the network and plot the historical training history run `python train_evaluate_model.py`.
 
-![loss_history](https://user-images.githubusercontent.com/45107198/65028436-56db7980-d93c-11e9-8bcc-0065496db30b.png)
+![loss_history](https://user-images.githubusercontent.com/45107198/65030673-37465000-d940-11e9-8deb-f575239156f3.png)
 
 ![performance_train_test](https://user-images.githubusercontent.com/45107198/65028506-74104800-d93c-11e9-8a45-ef11cb9523a0.png)
 
