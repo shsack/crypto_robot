@@ -16,5 +16,5 @@ The trading strategy simply places a long or short position at the beginning of 
 No fees or spreads are taken into account in the backtest. The preformance of the LSTM trading strategy is compared to simply buying and holding
 as well as random daily long and short positions. 
 
-
+![loss_history](https://user-images.githubusercontent.com/45107198/65028436-56db7980-d93c-11e9-8bcc-0065496db30b.png)
 
