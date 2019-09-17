@@ -20,8 +20,8 @@ To train the network and plot the historical training history run `python train_
 ## Backtest trading strategy
 To further evaluate the quality of the forecast `backtest.py` implementes a simple trading strategy and tests it on the test dataset.
 The trading strategy simply places a long or short position at the beginning of the day based on the forecast and closes the position at the end of the day.
-No fees or spreads are taken into account. The preformance of the LSTM trading strategy is compared to simply buying and holding as well as random daily long and short positions. The results for backtesting on the 2019 bull market show promising results for the LSTM strategy. 
+No fees or spreads are taken into account. The preformance of the LSTM trading strategy is compared to simply buying and holding as well as random daily long and short positions. The return of investment results for backtesting on the 2019 bull market show promising results for the LSTM strategy. 
 
 LSTM | Buy & Hold | Random
 --- | --- | ---
-261% | 252% | 99%
+161% | 152% | -1%
