@@ -59,10 +59,12 @@ def collect_data(from_symbol, to_symbol, exchange, datetime_interval):
     del df['volumeto']
 
     # Add features
-    df = stockstats.StockDataFrame.retype(df)
-    df.get("macd")
-    df.get("rsi_14")
+    # df = stockstats.StockDataFrame.retype(df)
+    # df.get("macd")
+    # df.get("rsi_14")
     df["average"] = (df["high"] + df["low"]) / 2
+
+    #df["change"] = df["average"].pct_change()
 
     # Filter empty data points and infinities
     df = filter_empty_datapoints(df)
