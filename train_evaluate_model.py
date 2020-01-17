@@ -13,19 +13,23 @@ from datetime import datetime
 from sklearn.model_selection import train_test_split
 
 def one_hot_vector_encoding(data):
-    threshold = 0.015
+    # threshold = 0.015
     y = []
     for i, change in enumerate(data.values):
-        if change < - threshold:
-            y.append([1, 0, 0, 0])
-        elif - threshold <= change < 0:
-            y.append([0, 1, 0, 0])
-        elif 0 <= change < threshold:
-            y.append([0, 0, 1, 0])
-        elif change >= threshold:
-            y.append([0, 0, 0, 1])
-        else:
-            print('Error, check entries!')
+        # if change < - threshold:
+        #     y.append([1, 0, 0, 0])
+        # elif - threshold <= change < 0:
+        #     y.append([0, 1, 0, 0])
+        # elif 0 <= change < threshold:
+        #     y.append([0, 0, 1, 0])
+        # elif change >= threshold:
+        #     y.append([0, 0, 0, 1])
+        # else:
+        #     print('Error, check entries!')
+        if change < 0:
+            y.append([1, 0])
+        elif change >= 0:
+            y.append([0, 1])
     return y
 
 from_symbol = 'BTC'
@@ -41,6 +45,10 @@ data = read_dataset(get_filename(from_symbol, to_symbol, exchange, datetime_inte
 data["change"] = data["average"].pct_change()
 data.dropna(inplace=True)
 
+num_past_days = 10
+
+y = data["change"]
+y = one_hot_vector_encoding(y)[num_past_days:]
 
 # original_data = data
 # values = data.values
@@ -60,16 +68,17 @@ scaled = scaler.fit_transform(values)
 # joblib.dump(scaler, scaler_filename)
 
 num_features = len(data.columns)
-num_past_days = 5
+# num_past_days = 10
 
-y = data["average"].pct_change()
-y.dropna(inplace=True)
+# y = data["average"].pct_change()
+# y.dropna(inplace=True)
 
-y = one_hot_vector_encoding(y)[num_past_days-1:]
+# y = one_hot_vector_encoding(y)[num_past_days-1:]
 
 
 data = series_to_supervised(scaled, n_in=num_past_days, n_out=1)
 X = data.values
+
 
 num_obs = num_features * num_past_days
 
@@ -118,12 +127,12 @@ X_test = X_test.reshape((X_test.shape[0], num_past_days, num_features))
 model = Sequential()
 model.add(LSTM(50, input_shape=(X_train.shape[1], X_train.shape[2])))
 #model.add(Dense(1))
-model.add(Dense(4, activation='softmax'))
+model.add(Dense(2, activation='softmax'))
 model.compile(loss='categorical_crossentropy', optimizer='adam', metrics=['accuracy'])
 
 
 # Train the model
-history = model.fit(X_train, y_train, epochs=50, batch_size=5, validation_data=(X_test, y_test), verbose=2, shuffle=False)
+history = model.fit(X_train, y_train, epochs=200, batch_size=5, validation_data=(X_test, y_test), verbose=2, shuffle=False)
 
 
 exit()
